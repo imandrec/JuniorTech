@@ -1,0 +1,24 @@
+RewriteEngine On
+RewriteBase /
+
+# Redirect index.php to domain root
+RewriteCond %{THE_REQUEST} \ /index\.php
+RewriteRule ^index\.php$ / [L,R=301]
+
+# Redirect root directory to home.html
+RewriteCond %{REQUEST_URI} ^/$
+RewriteRule ^$ /home.html [L]
+
+# Remove .html extension from URLs
+RewriteCond %{REQUEST_FILENAME} !-f
+RewriteCond %{REQUEST_FILENAME} !-d
+RewriteRule ^([^/]+)$ $1.html [L]
+
+# Optional: Redirect .html requests to non-.html URLs (to avoid duplicate content)
+RewriteCond %{THE_REQUEST} \.html [NC]
+RewriteRule ^(.*)\.html$ /$1 [L,R=301]
+
+# Rewrite requests to home.html if the file or directory doesn't exist
+RewriteCond %{REQUEST_FILENAME} !-f
+RewriteCond %{REQUEST_FILENAME} !-d
+RewriteRule . /home.html [L]
